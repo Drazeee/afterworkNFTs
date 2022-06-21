@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/static/css/main.3cb28933.chunk.css",
+    "main.js": "/static/js/main.6569590c.chunk.js",
+    "main.js.map": "/static/js/main.6569590c.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.0758e493.js",
+    "runtime-main.js.map": "/static/js/runtime-main.0758e493.js.map",
+    "static/css/2.b8fe46b5.chunk.css": "/static/css/2.b8fe46b5.chunk.css",
+    "static/js/2.687bb31f.chunk.js": "/static/js/2.687bb31f.chunk.js",
+    "static/js/2.687bb31f.chunk.js.map": "/static/js/2.687bb31f.chunk.js.map",
+    "static/js/3.36a3a3e0.chunk.js": "/static/js/3.36a3a3e0.chunk.js",
+    "static/js/3.36a3a3e0.chunk.js.map": "/static/js/3.36a3a3e0.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.b8fe46b5.chunk.css.map": "/static/css/2.b8fe46b5.chunk.css.map",
+    "static/css/main.3cb28933.chunk.css.map": "/static/css/main.3cb28933.chunk.css.map",
+    "static/js/2.687bb31f.chunk.js.LICENSE.txt": "/static/js/2.687bb31f.chunk.js.LICENSE.txt",
+    "static/media/DevFund.9c9f4b36.png": "/static/media/DevFund.9c9f4b36.png",
+    "static/media/LACITY.47474788.png": "/static/media/LACITY.47474788.png",
+    "static/media/XBTO.b7e281bc.png": "/static/media/XBTO.b7e281bc.png",
+    "static/media/nft.59f23ade.png": "/static/media/nft.59f23ade.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.0758e493.js",
+    "static/css/2.b8fe46b5.chunk.css",
+    "static/js/2.687bb31f.chunk.js",
+    "static/css/main.3cb28933.chunk.css",
+    "static/js/main.6569590c.chunk.js"
+  ]
+}

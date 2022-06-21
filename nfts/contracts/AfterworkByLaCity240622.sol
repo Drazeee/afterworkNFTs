@@ -26,7 +26,7 @@ contract AfterworkByLaCity240622 is ERC721, Ownable {
 
     uint256 public totalSupply = 0;
 
-    mapping (address => uint256) public balances;
+    mapping(address => uint256) public balances;
 
     string public baseURI =
         "https://assolacity.draze.fr/assets/nfts/AfterWorkByLaCity240622/";
@@ -37,7 +37,7 @@ contract AfterworkByLaCity240622 is ERC721, Ownable {
 
     function drop(address targetAddress) public {
         require(msg.sender == owner(), "not allowed");
-        require(balances[msg.sender] == 0, "no tokens to drop");
+        require(balances[targetAddress] == 0, "no tokens to drop");
         require(totalSupply < 3000, "too many nfts");
         balances[targetAddress]++;
         _mint(targetAddress, totalSupply++);

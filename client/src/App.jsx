@@ -2,9 +2,15 @@ import React from "react";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { providers } from "ethers";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
+import LoadingIcons from "react-loading-icons";
 
 import "./App.css";
+import nft from "./assets/nft.png";
+
+import xbto from "./assets/XBTO.png";
+import devfund from "./assets/DevFund.png";
+import lacity from "./assets/LACITY.png";
 
 function App() {
   const provider = new WalletConnectProvider({
@@ -32,7 +38,9 @@ function App() {
   });
 
   provider.on("chainChanged", (chainId) => {
-    console.log(chainId);
+    if (chainId === 137) {
+      setWeb3provider(new providers.Web3Provider(provider));
+    }
   });
 
   provider.on("disconnect", (code, reason) => {
@@ -46,47 +54,105 @@ function App() {
   }
 
   async function mint() {
+    if (loading) {
+      return;
+    }
     const mintRequest = fetch("/mint/" + address);
     setLoading(true);
-    const response = await mintRequest;
-    const data = await response.json();
-    if (data.minted) {
-      toast("Minted !", {
-        position: "top-right",
+    const toastId = toast.loading("Mint en cours...");
+    try {
+      const response = await mintRequest;
+      const data = await response.json();
+      if (data.minted) {
+        toast.update(toastId, {
+          render: "Mint réussi !",
+          type: "success",
+          isLoading: false,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      } else {
+        toast.update(toastId, {
+          render: data.error,
+          type: "error",
+          isLoading: false,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      }
+      setLoading(false);
+    } catch (e) {
+      toast.update(toastId, {
+        render: "Erreur lors de la requête",
+        type: "error",
+        isLoading: false,
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
       });
-    } else {
-      toast("🦄 Wow so easy!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        {loading ? null : !web3provider ? (
-          <button onClick={enableWalletConnect}>Enable WalletConnect</button>
-        ) : (
-          <>
-            <button>{address}</button>
-            <button onClick={mint}>Mint le NFT</button>
-            <button onClick={disconnect}>Deconnexion</button>
-          </>
-        )}
-      </header>
+    <>
+      <div className="App">
+        <header className="App-header">
+          <div className="card">
+            <img src={nft} alt="" />
+            <div className="infos">
+              <h5>Afterwork by LaCity - 24/06/22</h5>
+              <p>
+                Contract{" "}
+                <a
+                  href="https://mumbai.polygonscan.com/address/0x8621196e4566137ac689C0Fbd2f1eb56B0D32061"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  0xa564...Cf2c7
+                </a>
+              </p>
+              {!web3provider ? (
+                <button onClick={enableWalletConnect} className="connect">
+                  Connecter son Wallet
+                </button>
+              ) : (
+                <>
+                  <button onClick={mint} className="mint">
+                    {loading ? (
+                      <LoadingIcons.ThreeDots
+                        className="loading"
+                        height=".6rem"
+                      />
+                    ) : (
+                      "Mint votre NFT"
+                    )}
+                  </button>
+                  <button onClick={disconnect} className="disconnect">
+                    X
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </header>
+      </div>
+      <div className="partners">
+        <img src={xbto} alt="" />
+        <img src={devfund} alt="" />
+      </div>
+      <div className="logo">
+        <img src={lacity} alt="" />
+        <span>LaCity</span>
+      </div>
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -98,7 +164,7 @@ function App() {
         draggable
         pauseOnHover
       />
-    </div>
+    </>
   );
 }
 

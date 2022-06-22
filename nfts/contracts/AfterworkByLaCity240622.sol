@@ -57,6 +57,10 @@ contract AfterworkByLaCity240622 is ERC721, Ownable {
         return string(abi.encodePacked(baseURI, toString(tokenId), ".json"));
     }
 
+    function contractURI() public pure returns (string memory) {
+        return "https://assolacity.draze.fr/assets/nfts/collection.json";
+    }
+
     uint256 buildersSupply = 0;
 
     function dropForBuilders(address targetAddress) public {

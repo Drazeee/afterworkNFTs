@@ -24,9 +24,15 @@ contract AfterworkByLaCity240622 is ERC721, Ownable {
         return string(buffer);
     }
 
-    uint256 public totalSupply = 0;
+    address[] private participants;
 
-    mapping(address => uint256) public balances;
+    function getParticipants() public view returns (address[] memory) {
+        return participants;
+    }
+
+    uint256 private supply = 0;
+
+    mapping(address => uint256) private balances;
 
     string public baseURI =
         "https://assolacity.draze.fr/assets/nfts/AfterWorkByLaCity240622/";
@@ -38,9 +44,14 @@ contract AfterworkByLaCity240622 is ERC721, Ownable {
     function drop(address targetAddress) public {
         require(msg.sender == owner(), "not allowed");
         require(balances[targetAddress] == 0, "no tokens to drop");
-        require(totalSupply < 3000, "too many nfts");
+        require(supply < 3000, "too many nfts");
         balances[targetAddress]++;
-        _mint(targetAddress, totalSupply++);
+        participants.push(targetAddress);
+        _mint(targetAddress, supply++);
+    }
+
+    function totalSupply() public view returns (uint256) {
+        return supply + 1;
     }
 
     function getBalance(address targetAddress) public view returns (uint256) {
@@ -58,13 +69,23 @@ contract AfterworkByLaCity240622 is ERC721, Ownable {
     }
 
     function contractURI() public pure returns (string memory) {
-        return "https://assolacity.draze.fr/assets/nfts/collection.json";
+        return
+            "https://assolacity.draze.fr/assets/nfts/AfterWorkByLaCity240622/collection.json";
     }
 
-    uint256 buildersSupply = 0;
+    uint256 organizersSupply = 0;
 
-    function dropForBuilders(address targetAddress) public {
+    function dropForOrganizer(address targetAddress) public {
         require(msg.sender == owner(), "not allowed");
-        _mint(targetAddress, 3000 + buildersSupply++);
+        _mint(targetAddress, 3000 + organizersSupply++);
+    }
+
+    bool beerPongAvailable = true;
+
+    function beerPong(address winner) public {
+        require(msg.sender == owner(), "not allowed");
+        require(beerPongAvailable, "beer pong already mint");
+        beerPongAvailable = false;
+        _mint(winner, 8335);
     }
 }

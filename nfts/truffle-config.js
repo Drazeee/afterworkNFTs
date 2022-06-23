@@ -5,11 +5,17 @@ const mnemonic = fs.readFileSync(".secret").toString().trim();
 
 module.exports = {
   networks: {
-    matic: {
+    mumbai: {
       provider: () => new HDWalletProvider(mnemonic, `https://matic-mumbai.chainstacklabs.com`),
       network_id: 80001,       // Ropsten's id
       timeoutBlocks: 300,  // # of blocks before a deployment times out  (minimum/default: 50)
     },
+    matic: {
+      provider: () => new HDWalletProvider(mnemonic, `https://matic-mainnet.chainstacklabs.com`),
+      network_id: 137,       // Ropsten's id
+      timeoutBlocks: 300,  // # of blocks before a deployment times out  (minimum/default: 50)
+      gasPrice: 45000000000,
+    }
     // polygon: {
     //   provider: () => new HDWalletProvider(mnemonic, `https://matic-mainnet.chainstacklabs.com`),
     //   network_id: 137,       // Ropsten's id

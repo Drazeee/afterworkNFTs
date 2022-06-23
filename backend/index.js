@@ -1,4 +1,5 @@
 const express = require('express')
+const ethers = require('ethers')
 require("dotenv").config()
 
 const app = express();
@@ -10,7 +11,10 @@ app.get('/mint/:address', (req, res) => {
     const { address } = req.params;
     contract.getBalance(address).then(balance => {
         if (balance.toString() === '0') {
-            contract.drop(address)
+            contract.drop(address, {
+                gasPrice: ethers.utils.parseUnits('50', 'gwei').toString(),
+                gasLimit: 177302
+            })
                 .then(() => {
                     console.log('Minted for address:', address);
                     res.json({
@@ -18,6 +22,7 @@ app.get('/mint/:address', (req, res) => {
                     })
                 })
                 .catch(err => {
+                    console.log(err.message);
                     res.status(500).json({
                         minted: false,
                         error: err.message,

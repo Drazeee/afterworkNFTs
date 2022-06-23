@@ -113,11 +113,11 @@ function App() {
               <p>
                 Contract{" "}
                 <a
-                  href="https://mumbai.polygonscan.com/address/0x8621196e4566137ac689C0Fbd2f1eb56B0D32061"
+                  href="https://polygonscan.com/address/0x8303A493ff94565a71D6a5a60D303aC2F3153983"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  0xa564...Cf2c7
+                  0x8303...3983
                 </a>
               </p>
               {!web3provider ? (

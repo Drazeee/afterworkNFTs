@@ -14,7 +14,7 @@ module.exports = {
       provider: () => new HDWalletProvider(mnemonic, `https://matic-mainnet.chainstacklabs.com`),
       network_id: 137,       // Ropsten's id
       timeoutBlocks: 300,  // # of blocks before a deployment times out  (minimum/default: 50)
-      gasPrice: 45000000000,
+      gasPrice: 40000000000,
     }
     // polygon: {
     //   provider: () => new HDWalletProvider(mnemonic, `https://matic-mainnet.chainstacklabs.com`),
@@ -42,6 +42,6 @@ module.exports = {
   },
   plugins: ['truffle-plugin-verify'],
   api_keys: {
-    polygonscan: 'GPX6CQDASZQHZMKHQYKNFNA76FKB1KS4PC'
+    polygonscan: process.env.POLYGONSCAN_API_KEY
   }
 };

@@ -5,14 +5,22 @@ require("dotenv").config()
 const app = express();
 const port = process.env.PORT || 3001;
 
+const { provider } = require('./src/loadWallet');
 const { contract } = require('./src/loadContract');
+
+async function getGasPrice(mul) {
+    const price = await provider.getGasPrice();
+    const str = ethers.utils.formatEther(price);
+    const eth = str * mul;
+    return ethers.utils.parseEther(eth.toFixed(18));
+}
 
 app.get('/mint/:address', (req, res) => {
     const { address } = req.params;
     contract.getBalance(address).then(balance => {
         if (balance.toString() === '0') {
             contract.drop(address, {
-                gasPrice: ethers.utils.parseUnits('50', 'gwei').toString(),
+                gasPrice: getGasPrice(1.1),
                 gasLimit: 177302
             })
                 .then(() => {

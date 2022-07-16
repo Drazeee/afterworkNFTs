@@ -35,7 +35,7 @@ contract AfterworkByLaCity240622 is ERC721, Ownable {
     mapping(address => uint256) private balances;
 
     string public baseURI =
-        "https://assolacity.draze.fr/assets/nfts/AfterWorkByLaCity240622/";
+        "https://assolacity.fr/assets/nfts/AfterWorkByLaCity240622/";
 
     constructor()
         ERC721("Afterwork by LaCity - 24/06/22", "AW LACITY 24/06/22")
@@ -70,7 +70,7 @@ contract AfterworkByLaCity240622 is ERC721, Ownable {
 
     function contractURI() public pure returns (string memory) {
         return
-            "https://assolacity.draze.fr/assets/nfts/AfterWorkByLaCity240622/collection.json";
+            "https://assolacity.fr/assets/nfts/AfterWorkByLaCity240622/collection.json";
     }
 
     uint256 organizersSupply = 0;
@@ -80,12 +80,18 @@ contract AfterworkByLaCity240622 is ERC721, Ownable {
         _mint(targetAddress, 3000 + organizersSupply++);
     }
 
-    bool beerPongAvailable = true;
+    uint256 beerPongAvailable = 10;
+    uint256 beerPongSupply = 0;
+
+    function updateBeerPongAvailable(uint256 newValue) public {
+        require(msg.sender == owner(), "not allowed");
+        beerPongAvailable = newValue;
+    }
 
     function beerPong(address winner) public {
         require(msg.sender == owner(), "not allowed");
-        require(beerPongAvailable, "beer pong already mint");
-        beerPongAvailable = false;
-        _mint(winner, 8335);
+        require(beerPongAvailable > 0, "beer pong already mint");
+        beerPongAvailable--;
+        _mint(winner, 8335 + beerPongSupply++);
     }
 }

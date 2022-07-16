@@ -115,7 +115,13 @@ button {
 }
 
 .card .connect {
-  width: 100%;
+  width: 48%;
+  background: #fff;
+  border: 1px solid #000;
+}
+
+.card .connect img {
+  height: .75rem;
 }
 
 .card .mint {

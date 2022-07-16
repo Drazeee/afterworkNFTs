@@ -7,6 +7,8 @@ import LoadingIcons from "react-loading-icons";
 
 import "./App.css";
 import nft from "./assets/nft.png";
+import metamask from "./assets/metamask.svg";
+import walletconnect from "./assets/walletconnect.svg";
 
 import xbto from "./assets/XBTO.png";
 import devfund from "./assets/DevFund.png";
@@ -14,43 +16,61 @@ import lacity from "./assets/LACITY.png";
 
 function App() {
   const provider = new WalletConnectProvider({
-    infuraId: "f8ccbba88cde4fbf8cfa8c82dc353e08",
+    infuraId: process.env.REACT_APP_INFURA_ID,
     rpc: {
       137: "https://matic-mainnet.chainstacklabs.com",
       80001: "https://matic-mumbai.chainstacklabs.com",
     },
   });
 
-  const [web3provider, setWeb3provider] = React.useState(null);
+  const [WCprovider, setWCprovider] = React.useState(null);
+  const [injectedProvider, setInjectedProvider] = React.useState(null);
   const [address, setAddress] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
+  const [isMetamask, setMetamask] = React.useState(false);
 
   async function enableWalletConnect() {
     await provider.enable();
-    setWeb3provider(new providers.Web3Provider(provider));
+    setWCprovider(new providers.Web3Provider(provider));
   }
 
   provider.on("accountsChanged", (accounts) => {
     if (accounts.length > 0) {
-      setWeb3provider(new providers.Web3Provider(provider));
+      setWCprovider(new providers.Web3Provider(provider));
       setAddress(accounts[0]);
     }
   });
 
   provider.on("chainChanged", (chainId) => {
     if (chainId === 137) {
-      setWeb3provider(new providers.Web3Provider(provider));
+      setWCprovider(new providers.Web3Provider(provider));
     }
   });
 
   provider.on("disconnect", (code, reason) => {
-    setWeb3provider(null);
+    setWCprovider(null);
     setAddress(null);
     console.log(code, reason);
   });
 
+  function connectInjected() {
+    if (!window.ethereum) {
+      toast.error("Please install MetaMask");
+      return;
+    }
+    window.ethereum.request({ method: "eth_requestAccounts" }).then((res) => {
+      setAddress(res[0]);
+      setInjectedProvider(new providers.Web3Provider(window.ethereum));
+      setMetamask(true);
+    });
+  }
+
   async function disconnect() {
-    await provider.disconnect();
+    if (isMetamask) {
+      setInjectedProvider(null);
+    } else {
+      await provider.disconnect();
+    }
   }
 
   async function mint() {
@@ -120,10 +140,15 @@ function App() {
                   0x8303...3983
                 </a>
               </p>
-              {!web3provider ? (
-                <button onClick={enableWalletConnect} className="connect">
-                  Connecter son Wallet
-                </button>
+              {!WCprovider && !injectedProvider ? (
+                <div style={{display: "flex", justifyContent: "space-between"}}>
+                  <button onClick={connectInjected} className="connect">
+                    <img src={metamask} alt="" />
+                  </button>
+                  <button onClick={enableWalletConnect} className="connect">
+                    <img src={walletconnect} alt="" />
+                  </button>
+                </div>
               ) : (
                 <>
                   <button onClick={mint} className="mint">
